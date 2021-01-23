@@ -29,55 +29,53 @@
         border-radius: 0.4rem;
         }
     </style>
-    <script>
-        const div = document.querySelector('#NHL');
-            const url = "https://statsapi.web.nhl.com/api/v1/teams/30/?expand=team.schedule.next";
-
-            // sending request
-            fetch(url).then((response) => {
-                return response.json();  // converting byte data to json
-            }).then(data => {
-                console.log(data)
-                // creating h1 and p elements
-                const away = document.createElement('p');
-                const home = document.createElement('p');
-
-                const score = document.createElement('p');
-
-                const hdate = document.createElement('p');
-
-                console.log(data.teams[0])
-
-                const homerecordwin = data.teams[0].nextGameSchedule.dates[0].games[0].teams.home.leagueRecord.wins;
-                const homerecordloss = data.teams[0].nextGameSchedule.dates[0].games[0].teams.home.leagueRecord.losses;
-                const homerecordtie = data.teams[0].nextGameSchedule.dates[0].games[0].teams.home.leagueRecord.ot;
-
-                const awayrecordwin = data.teams[0].nextGameSchedule.dates[0].games[0].teams.away.leagueRecord.wins;
-                const awayrecordloss = data.teams[0].nextGameSchedule.dates[0].games[0].teams.away.leagueRecord.losses;
-                const awayrecordtie = data.teams[0].nextGameSchedule.dates[0].games[0].teams.away.leagueRecord.ot;
-
-
-                hdate.textContent = `${data.teams[0].nextGameSchedule.dates[0].date}`
-                away.textContent = `AWAY: ${data.teams[0].nextGameSchedule.dates[0].games[0].teams.away.team.name} ${awayrecordwin}-${awayrecordloss}-${awayrecordtie}`;
-                home.textContent = `HOME: ${data.teams[0].nextGameSchedule.dates[0].games[0].teams.home.team.name} ${homerecordwin}-${homerecordloss}-${homerecordtie}`;
-
-                score.textContent = `AWAY: ${data.teams[0].nextGameSchedule.dates[0].games[0].teams.away.score} - HOME: ${data.teams[0].nextGameSchedule.dates[0].games[0].teams.away.score}`
-
-
-                // appending to div element
-                div.appendChild(hdate)
-                div.appendChild(away);
-                div.appendChild(home);
-                div.appendChild(score);
-
-
-            }).catch(error => {
-                // logging error
-                console.log(error);
-            })
-    </script>
 </head>
 <body>
-<div id="NHL"></div>
+<div id="NHL">
+    <h1>Minnesota Hockey</h1>
+    <p class="badge">play next</p>
+</div>
+
+<script>
+    const div = document.querySelector('#NHL');
+        const url = "https://statsapi.web.nhl.com/api/v1/teams/30/?expand=team.schedule.next";
+
+        // sending request
+        fetch(url).then((response) => {
+            return response.json();  // converting byte data to json
+        }).then(data => {
+            // creating h1 and p elements
+            const away = document.createElement('p');
+            const home = document.createElement('p');
+            const score = document.createElement('p');
+            const hdate = document.createElement('p');
+
+            const homerecordwin = data.teams[0].nextGameSchedule.dates[0].games[0].teams.home.leagueRecord.wins;
+            const homerecordloss = data.teams[0].nextGameSchedule.dates[0].games[0].teams.home.leagueRecord.losses;
+            const homerecordtie = data.teams[0].nextGameSchedule.dates[0].games[0].teams.home.leagueRecord.ot;
+
+            const awayrecordwin = data.teams[0].nextGameSchedule.dates[0].games[0].teams.away.leagueRecord.wins;
+            const awayrecordloss = data.teams[0].nextGameSchedule.dates[0].games[0].teams.away.leagueRecord.losses;
+            const awayrecordtie = data.teams[0].nextGameSchedule.dates[0].games[0].teams.away.leagueRecord.ot;
+
+
+            hdate.textContent = `${data.teams[0].nextGameSchedule.dates[0].date}`
+            away.textContent = `AWAY: ${data.teams[0].nextGameSchedule.dates[0].games[0].teams.away.team.name} ${awayrecordwin}-${awayrecordloss}-${awayrecordtie}`;
+            home.textContent = `HOME: ${data.teams[0].nextGameSchedule.dates[0].games[0].teams.home.team.name} ${homerecordwin}-${homerecordloss}-${homerecordtie}`;
+            score.textContent = `AWAY: ${data.teams[0].nextGameSchedule.dates[0].games[0].teams.away.score} - HOME: ${data.teams[0].nextGameSchedule.dates[0].games[0].teams.away.score}`
+
+
+            // appending to div element
+            div.appendChild(hdate)
+            div.appendChild(away);
+            div.appendChild(home);
+            div.appendChild(score);
+
+
+        }).catch(error => {
+            // logging error
+            console.log(error);
+        })
+</script>
 </body>
 </html>
