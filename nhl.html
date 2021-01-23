@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NHL next play</title>
+    <style>
+        #NHL{
+        width: 500px;
+        padding: 1rem;
+        margin: 1rem;
+        box-shadow: 0 0 2px 2px rgba(0,0,0,0.2);
+        border-radius: 10px;
+        position: relative;
+        }
+
+        .badge{
+        display: block;
+        position: absolute;
+        top: 0rem;
+        right: 1.5rem;
+
+        background: #333333;
+        padding: 0.8rem;
+        color: #ffffff;
+        text-transform: uppercase;
+        font-size: 0.8rem;
+
+        border-radius: 0.4rem;
+        }
+    </style>
+    <script>
+        const div = document.querySelector('#NHL');
+            const url = "https://statsapi.web.nhl.com/api/v1/teams/30/?expand=team.schedule.next";
+
+            // sending request
+            fetch(url).then((response) => {
+                return response.json();  // converting byte data to json
+            }).then(data => {
+                console.log(data)
+                // creating h1 and p elements
+                const away = document.createElement('p');
+                const home = document.createElement('p');
+
+                const score = document.createElement('p');
+
+                const hdate = document.createElement('p');
+
+                console.log(data.teams[0])
+
+                const homerecordwin = data.teams[0].nextGameSchedule.dates[0].games[0].teams.home.leagueRecord.wins;
+                const homerecordloss = data.teams[0].nextGameSchedule.dates[0].games[0].teams.home.leagueRecord.losses;
+                const homerecordtie = data.teams[0].nextGameSchedule.dates[0].games[0].teams.home.leagueRecord.ot;
+
+                const awayrecordwin = data.teams[0].nextGameSchedule.dates[0].games[0].teams.away.leagueRecord.wins;
+                const awayrecordloss = data.teams[0].nextGameSchedule.dates[0].games[0].teams.away.leagueRecord.losses;
+                const awayrecordtie = data.teams[0].nextGameSchedule.dates[0].games[0].teams.away.leagueRecord.ot;
+
+
+                hdate.textContent = `${data.teams[0].nextGameSchedule.dates[0].date}`
+                away.textContent = `AWAY: ${data.teams[0].nextGameSchedule.dates[0].games[0].teams.away.team.name} ${awayrecordwin}-${awayrecordloss}-${awayrecordtie}`;
+                home.textContent = `HOME: ${data.teams[0].nextGameSchedule.dates[0].games[0].teams.home.team.name} ${homerecordwin}-${homerecordloss}-${homerecordtie}`;
+
+                score.textContent = `AWAY: ${data.teams[0].nextGameSchedule.dates[0].games[0].teams.away.score} - HOME: ${data.teams[0].nextGameSchedule.dates[0].games[0].teams.away.score}`
+
+
+                // appending to div element
+                div.appendChild(hdate)
+                div.appendChild(away);
+                div.appendChild(home);
+                div.appendChild(score);
+
+
+            }).catch(error => {
+                // logging error
+                console.log(error);
+            })
+    </script>
+</head>
+<body>
+<div id="NHL"></div>
+</body>
+</html>
